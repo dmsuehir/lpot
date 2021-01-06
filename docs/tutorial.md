@@ -10,7 +10,7 @@ First user needs to prepare FP32 model, and then configure the model information
     <td>Tutorial</td>
   </tr>
   <tr>
-    <td><img src="docs/imgs/tutorial.png" width=640 height=320></td>
+    <td><img src="./imgs/tutorial.png" width=640 height=320></td>
   </tr>
  </table>
  
@@ -21,8 +21,8 @@ Here is an example of ymal file and laucher code, the ymal file defined the tuni
     <td>launcher</td>
   </tr>
   <tr>
-    <td><img src="docs/imgs/ymal.png" width=640 height=320></td>
-    <td><img src="docs/imgs/launcher.png" width=640 height=320></td>
+    <td><img src="./imgs/ymal.png" width=640 height=320></td>
+    <td><img src="./imgs/launcher.png" width=640 height=320></td>
   </tr>
  </table>
 
@@ -32,7 +32,7 @@ To define a customized dataloader or evaluator for quantization, user can implem
     <td>Template for customized dataloader and evaluator</td>
   </tr>
   <tr>
-    <td><img src="docs/imgs/template.png" width=640 height=320></td>
+    <td><img src="./imgs/template.png" width=640 height=320></td>
   </tr>
  </table>
 
