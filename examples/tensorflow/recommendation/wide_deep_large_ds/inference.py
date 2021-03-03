@@ -214,6 +214,11 @@ class eval_classifier_optimized_graph:
 
         fp32_graph = load_graph(self.args.input_graph)
         quantizer = Quantization(self.args.config)
+
+        if "OUTPUT_DIR" in os.environ:
+            # Set the workspace to be in the OUTPUT_DIR, otherwise we get permissions errors when running in k8s
+            quantizer.conf.usr_cfg.workspace.path = os.path.join(os.getenv("OUTPUT_DIR"), "lpot_workspace")
+
         #q_model = quantizer(fp32_graph)
 
         def save(model, path):
