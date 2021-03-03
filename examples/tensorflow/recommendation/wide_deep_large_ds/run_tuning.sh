@@ -46,10 +46,16 @@ function run_tuning {
         fi
     fi
 
+    set -x
+
+    echo "---------------------------------------------------------------------"
     echo "Config: ${config_yaml}"
     echo "Input model: ${input_model}"
     echo "Output model: ${output_model}"
     echo "Running script: ${inference_script}"
+    echo "---------------------------------------------------------------------"
+
+    set +x
 
     python $inference_script \
             --input_graph ${input_model} \
@@ -60,6 +66,15 @@ function run_tuning {
             --output_graph ${output_model} \
             --config ${config_yaml} \
             --tune
+
+    # check for the output graph
+    if [[ -f "$output_graph" ]]; then
+        echo "Found output graph at: ${output_graph}"
+        exit 1
+    else
+        echo "The output graph (${output_graph}) does not exist."
+        exit 1
+    fi
 }
 
 main "$@"
