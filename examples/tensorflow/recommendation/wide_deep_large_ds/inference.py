@@ -217,7 +217,7 @@ class eval_classifier_optimized_graph:
 
         if "OUTPUT_DIR" in os.environ:
             # Set the workspace to be in the OUTPUT_DIR, otherwise we get permissions errors when running in k8s
-            quantizer.conf.usr_cfg.workspace.path = os.path.join(os.getenv("OUTPUT_DIR"), "lpot_workspace")
+            quantizer.conf.usr_cfg.tuning.workspace.path = os.path.join(os.getenv("OUTPUT_DIR"), "lpot_workspace")
 
         #q_model = quantizer(fp32_graph)
 
