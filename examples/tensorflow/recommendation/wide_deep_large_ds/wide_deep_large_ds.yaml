@@ -17,6 +17,8 @@ quantization:                                        # optional. tuning constrai
            }
 
 tuning:
+  workspace:
+    path: <output dir>
   accuracy_criterion:
     relative:  0.01                                  # optional. default value is relative, other value is absolute. this example allows relative accuracy loss: 1%.
   exit_policy:

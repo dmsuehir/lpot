@@ -35,6 +35,8 @@ function init_params {
 
 }
 
+old_path="<output dir>"
+sed -i "s|$old_path|$OUTPUT_DIR|g" wide_deep_large_ds.yaml
 
 # run_tuning
 function run_tuning {
