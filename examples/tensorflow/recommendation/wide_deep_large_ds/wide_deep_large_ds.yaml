@@ -1,12 +1,12 @@
 model:                                               # mandatory. lpot uses this model name and framework name to decide where to save tuning history and deploy yaml.
   name: wide_deep_large_ds
   framework: tensorflow                              # mandatory. supported values are tensorflow, pytorch, or mxnet; allow new framework backend extension.
-  inputs: new_numeric_placeholder,new_categorical_placeholder
-  outputs: import/head/predictions/probabilities     # optional. inputs and outputs fields are only required for tensorflow backend.
+  inputs: Placeholder,Placeholder_1,Placeholder_2,Placeholder_3,Placeholder_4,Placeholder_5,Placeholder_6,Placeholder_7,Placeholder_8,Placeholder_9,Placeholder_10,Placeholder_11,Placeholder_12,Placeholder_13,Placeholder_14,Placeholder_15,Placeholder_16,Placeholder_17,Placeholder_18,Placeholder_19,Placeholder_20,Placeholder_21,Placeholder_22,Placeholder_23,Placeholder_24,Placeholder_25,Placeholder_26,Placeholder_27,Placeholder_28,Placeholder_29,Placeholder_30,Placeholder_31,Placeholder_32,Placeholder_33,Placeholder_34,Placeholder_35,Placeholder_36,Placeholder_37,Placeholder_38
+  outputs: head/predictions/probabilities     # optional. inputs and outputs fields are only required for tensorflow backend.
 
 quantization:                                        # optional. tuning constraints on model-wise for advance user to reduce tuning space.
   calibration:
-    sampling_size: 2000                              # optional. default value is the size of whole dataset. used to set how many portions of calibration dataset is used. exclusive with iterations field.
+    sampling_size: 0                              # optional. default value is the size of whole dataset. used to set how many portions of calibration dataset is used. exclusive with iterations field.
   model_wise:                                        # optional. tuning constraints on model-wise for advance user to reduce tuning space.
     activation:
       algorithm: minmax

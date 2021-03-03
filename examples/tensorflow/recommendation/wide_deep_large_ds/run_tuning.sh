@@ -40,8 +40,8 @@ function init_params {
 function run_tuning {
     python inference.py \
             --input_graph ${input_model} \
-            --evaluation_data_location ${dataset_location}/eval_processed_data.tfrecords \
-            --calibration_data_location ${dataset_location}/train_processed_data.tfrecords \
+            --evaluation_data_location ${dataset_location}/dataset_files/eval.csv \
+            --calibration_data_location ${dataset_location}/dataset_files/train.csv \
             --accuracy_only \
             --batch_size 1000 \
             --output_graph ${output_model} \
