@@ -38,11 +38,18 @@ function init_params {
 # run_tuning
 function run_tuning {
     inference_script="inference.py"
+    config_yaml="wide_deep_large_ds.yaml"
     if [[ ! -f "$inference_script" ]]; then
         if [[ ! -z "${LPOT_SOURCE_DIR}" ]]; then
             inference_script="${LPOT_SOURCE_DIR}/examples/tensorflow/recommendation/wide_deep_large_ds/inference.py"
+            config_yaml="${LPOT_SOURCE_DIR}/examples/tensorflow/recommendation/wide_deep_large_ds/wide_deep_large_ds.yaml"
         fi
     fi
+
+    echo "Config: ${config_yaml}"
+    echo "Input model: ${input_model}"
+    echo "Output model: ${output_model}"
+    echo "Running script: ${inference_script}"
 
     python $inference_script \
             --input_graph ${input_model} \
@@ -51,7 +58,7 @@ function run_tuning {
             --accuracy_only \
             --batch_size 1000 \
             --output_graph ${output_model} \
-            --config wide_deep_large_ds.yaml \
+            --config ${config_yaml} \
             --tune
 }
 
