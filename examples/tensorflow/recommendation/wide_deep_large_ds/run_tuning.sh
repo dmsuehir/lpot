@@ -37,7 +37,14 @@ function init_params {
 
 # run_tuning
 function run_tuning {
-    python inference.py \
+    inference_script="inference.py"
+    if [[ ! -f "$inference_script" ]]; then
+        if [[ ! -z "${LPOT_SOURCE_DIR}" ]]; then
+            inference_script="${LPOT_SOURCE_DIR}/examples/tensorflow/recommendation/wide_deep_large_ds/inference.py"
+        fi
+    fi
+
+    python $inference_script \
             --input_graph ${input_model} \
             --evaluation_data_location ${dataset_location}/eval.csv \
             --calibration_data_location ${dataset_location}/train.csv \
