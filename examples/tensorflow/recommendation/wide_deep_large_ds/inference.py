@@ -302,7 +302,6 @@ class eval_classifier_optimized_graph:
                 i = 0
                 for i in range(int(total_batches)):
                     start_time = time.time()
-                    if i == 0:
                     logistic = infer_sess.run(output_tensor, dict(zip(input_tensor, features_list[i][0])))
                     time_consume = time.time() - start_time
                     evaluate_duration += time_consume

@@ -67,12 +67,11 @@ function run_tuning {
             --config ${config_yaml} \
             --tune
 
-    # check for the output graph
-    if [[ -f "$output_graph" ]]; then
-        echo "Found output graph at: ${output_graph}"
-        exit 1
+    # check for the output graph file
+    if [[ -f "${output_model}" ]]; then
+        echo "Found output graph at: ${output_model}"
     else
-        echo "The output graph (${output_graph}) does not exist."
+        echo "The output graph (${output_model}) does not exist."
         exit 1
     fi
 }
