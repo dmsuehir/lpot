@@ -219,18 +219,6 @@ class eval_classifier_optimized_graph:
             # Set the workspace to be in the OUTPUT_DIR, otherwise we get permissions errors when running in k8s
             quantizer.conf.usr_cfg.tuning.workspace.path = os.path.join(os.getenv("OUTPUT_DIR"), "lpot_workspace")
 
-        #q_model = quantizer(fp32_graph)
-
-        def save(model, path):
-            from tensorflow.python.platform import gfile
-            f = gfile.GFile(path, 'wb')
-            f.write(model.as_graph_def().SerializeToString())
-   
-        #try:
-        #    save(q_model, self.args.output_graph)
-        #except Exception as e:
-        #    print("Exception while saving the quantized graph: {}".format(e))
-
         if self.args.calib_data:
             calib_dataloader = Dataloader(self.args.calib_data, self.args.batch_size)
             q_model = quantizer(
@@ -315,8 +303,6 @@ class eval_classifier_optimized_graph:
                 for i in range(int(total_batches)):
                     start_time = time.time()
                     if i == 0:
-                        print("one print - length")
-                        print(len(features_list[i][0][1]))
                     logistic = infer_sess.run(output_tensor, dict(zip(input_tensor, features_list[i][0])))
                     time_consume = time.time() - start_time
                     evaluate_duration += time_consume
