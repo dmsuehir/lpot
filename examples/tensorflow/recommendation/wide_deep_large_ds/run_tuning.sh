@@ -35,18 +35,45 @@ function init_params {
 
 }
 
-
 # run_tuning
 function run_tuning {
-    python inference.py \
+    inference_script="inference.py"
+    config_yaml="wide_deep_large_ds.yaml"
+    if [[ ! -f "$inference_script" ]]; then
+        if [[ ! -z "${LPOT_SOURCE_DIR}" ]]; then
+            inference_script="${LPOT_SOURCE_DIR}/examples/tensorflow/recommendation/wide_deep_large_ds/inference.py"
+            config_yaml="${LPOT_SOURCE_DIR}/examples/tensorflow/recommendation/wide_deep_large_ds/wide_deep_large_ds.yaml"
+        fi
+    fi
+
+    set -x
+
+    echo "---------------------------------------------------------------------"
+    echo "Config: ${config_yaml}"
+    echo "Input model: ${input_model}"
+    echo "Output model: ${output_model}"
+    echo "Running script: ${inference_script}"
+    echo "---------------------------------------------------------------------"
+
+    set +x
+
+    python $inference_script \
             --input_graph ${input_model} \
-            --evaluation_data_location ${dataset_location}/eval_processed_data.tfrecords \
-            --calibration_data_location ${dataset_location}/train_processed_data.tfrecords \
+            --evaluation_data_location ${dataset_location}/eval.csv \
+            --calibration_data_location ${dataset_location}/train.csv \
             --accuracy_only \
             --batch_size 1000 \
             --output_graph ${output_model} \
-            --config wide_deep_large_ds.yaml \
+            --config ${config_yaml} \
             --tune
+
+    # check for the output graph file
+    if [[ -f "${output_model}" ]]; then
+        echo "Found output graph at: ${output_model}"
+    else
+        echo "The output graph (${output_model}) does not exist."
+        exit 1
+    fi
 }
 
 main "$@"

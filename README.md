@@ -1,7 +1,7 @@
 Intel® Low Precision Optimization Tool
 ======================================
 
-Intel® Low Precision Optimization Tool (Intel® LPOT) is an open-source Python* library that delivers a unified low-precision inference interface across multiple Intel-optimized DL frameworks on both CPUs and GPUs. It supports automatic accuracy-driven tuning strategies, along with additional objectives such as optimizing for performance, model size, and memory footprint. It also provides easy extension capability for new backends, tuning strategies, metrics, and objectives.
+Intel® Low Precision Optimization Tool (Intel® LPOT) is an open-source Python library that delivers a unified low-precision inference interface across multiple Intel-optimized DL frameworks on both CPUs and GPUs. It supports automatic accuracy-driven tuning strategies, along with additional objectives such as optimizing for performance, model size, and memory footprint. It also provides easy extension capability for new backends, tuning strategies, metrics, and objectives.
 
 > **Note**
 >
@@ -19,31 +19,17 @@ Intel® Low Precision Optimization Tool (Intel® LPOT) is an open-source Python*
  </table>
 
 Supported Intel optimized DL frameworks are:
-* [TensorFlow\*](https://github.com/Intel-tensorflow/tensorflow), including [1.15.0 UP2](https://github.com/Intel-tensorflow/tensorflow/tree/v1.15.0up2), [1.15.0 UP1](https://github.com/Intel-tensorflow/tensorflow/tree/v1.15.0up1), [2.1.0](https://github.com/Intel-tensorflow/tensorflow/tree/v2.1.0), [2.2.0](https://github.com/Intel-tensorflow/tensorflow/tree/v2.2.0), [2.3.0](https://github.com/Intel-tensorflow/tensorflow/tree/v2.3.0), [2.4.0](https://github.com/Intel-tensorflow/tensorflow/tree/v2.4.0)
+* [TensorFlow\*](https://github.com/Intel-tensorflow/tensorflow), including [1.15.0 UP2](https://github.com/Intel-tensorflow/tensorflow/tree/v1.15.0up2), [1.15.0 UP1](https://github.com/Intel-tensorflow/tensorflow/tree/v1.15.0up1), [2.1.0](https://github.com/Intel-tensorflow/tensorflow/tree/v2.1.0), [2.2.0](https://github.com/Intel-tensorflow/tensorflow/tree/v2.2.0), [2.3.0](https://github.com/Intel-tensorflow/tensorflow/tree/v2.3.0)
 * [PyTorch\*](https://pytorch.org/), including [1.5.0+cpu](https://download.pytorch.org/whl/torch_stable.html), [1.6.0+cpu](https://download.pytorch.org/whl/torch_stable.html)
 * [Apache\* MXNet](https://mxnet.apache.org), including [1.6.0](https://github.com/apache/incubator-mxnet/tree/1.6.0), [1.7.0](https://github.com/apache/incubator-mxnet/tree/1.7.0)
 * [ONNX\* Runtime](https://github.com/microsoft/onnxruntime), including [1.6.0](https://github.com/microsoft/onnxruntime/tree/v1.6.0)
 
 
 # Installation
-
-The Intel® LPOT library is released as part of
-[Intel® oneAPI AI Analytics Toolkit](https://software.intel.com/content/www/us/en/develop/tools/oneapi/ai-analytics-toolkit.html) (AI Kit).
-The AI Kit provides a consolidated package of Intel's latest deep learning and
-machine optimizations all in one place for ease of development.  Along with
-LPOT, the AI Kit includes Intel-optimized versions of deep learning frameworks
-(such as TensorFlow and PyTorch) and high performing Python libraries to streamline
-end-to-end data science and AI workflows on Intel architectures.
-
 ## Install for Linux
-
-You can install just the LPOT library from binary or source, or you can get
-the Intel optimized framework together with the LPOT
-library by installing the Intel® oneAPI AI Analytics Toolkit.
-
 ### Install from binary
 
-  ```shell
+  ```Shell
   # install from pip
   pip install lpot
 
@@ -53,28 +39,15 @@ library by installing the Intel® oneAPI AI Analytics Toolkit.
 
 ### Install from source
 
-  ```shell
+  ```Shell
   git clone https://github.com/intel/lpot.git
   cd lpot
-  pip install -r requirements.txt
   python setup.py install
   ```
-### Install from AI Kit
-
-The AI Kit, which includes the LPOT
-library, is distributed through many common channels,
-including from Intel's website, YUM, APT, Anaconda, and more.
-[Select and download](https://software.intel.com/content/www/us/en/develop/tools/oneapi/ai-analytics-toolkit/download.html)
-the AI Kit distribution package that's best suited for you and follow the
-[Get Started Guide](https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-ai-linux/top.html)
-for post-installation instructions.
-
-|[Download AI Kit](https://software.intel.com/content/www/us/en/develop/tools/oneapi/ai-analytics-toolkit/) |[AI Kit Get Started Guide](https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-ai-linux/top.html) |
-|---|---|
 
 ## Install for Windows
 ### Install from binary
-  ```shell
+  ```Shell
   # install from pip
   pip install lpot
 
@@ -110,14 +83,8 @@ python setup.py install
 # Getting started
 
 * [Introduction](docs/introduction.md) explains Intel® Low Precision Optimization Tool's API.
-* [Transform](docs/transform.md) introduces how to utilize LPOT buildin data processing and how to develop a custom data processing method. 
-* [Dataset](docs/dataset.md) introudces how to utilize LPOT buildin dataset and how to develop a custom dataset.
-* [Metric](docs/metrics.md) introduces how to utilize LPOT buildin metrics and how to develop a custom metric.
 * [Tutorial](docs/tutorial.md) provides comprehensive instructions on how to utilize Intel® Low Precision Optimization Tool's features with examples. 
 * [Examples](examples) are provided to demonstrate the usage of Intel® Low Precision Optimization Tool in different frameworks: [TensorFlow](examples/tensorflow), [PyTorch](examples/pytorch), [MXNet](examples/mxnet) and [ONNX Runtime](examples/onnxrt).
-* [UX](docs/ux.md) is a web based system to simplify Intel® Low Precision Optimization Tool usage.
-* [Intel oneAPI AI Analytics Toolkit Get Started Guide](https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-ai-linux/top.html) explains the AI Kit components, installation and configuration guides, and instructions for building and running sample apps.
-* [AI and Analytics Samples](https://github.com/oneapi-src/oneAPI-samples/tree/master/AI-and-Analytics) includes code samples for Intel oneAPI libraries.
 
 
 # Deep Dive
@@ -126,7 +93,11 @@ python setup.py install
 * [Pruning](docs/pruning.md) provides a common method for introducing sparsity in weights and activations.
 * [Benchmarking](docs/benchmark.md) introduces how to utilize the benchmark interface of LPOT.
 * [Mixed precision](docs/mixed_precision.md) introduces how to enable mixed precision, including BFP16 and int8 and FP32, on Intel platforms during tuning.
+* [Transform](docs/transform.md) introduces how to utilize LPOT buildin data processing and how to develop a custom data processing method. 
+* [Dataset](docs/dataset.md) introudces how to utilize LPOT buildin dataset and how to develop a custom dataset.
+* [Metric](docs/metrics.md) introduces how to utilize LPOT buildin metrics and how to develop a custom metric.
 * [TensorBoard](docs/tensorboard.md) provides tensor histogram and execution graph for tuning debugging purpose.
+* [PyTorch Deploy](docs/pytorch_model_saving.md) introduces how LPOT saves and loads quantized PyTorch model.
 
 
 # Advanced Topics
@@ -158,13 +129,10 @@ Intel® Low Precision Optimization Tool requires installing the pertinent Intel-
 </thead>
 <tbody>
   <tr>
-    <td class="tg-nrix" rowspan="13">Cascade Lake<br><br>Cooper Lake<br><br>Skylake</td>
-    <td class="tg-nrix" rowspan="13">CentOS 7.8<br><br>Ubuntu 18.04</td>
-    <td class="tg-nrix" rowspan="13">3.6<br><br>3.7<br><br>3.8</td>
-    <td class="tg-cly1" rowspan="7">TensorFlow</td>
-    <td class="tg-7zrl">2.4.0</td>
-  </tr>
-  <tr>
+    <td class="tg-nrix" rowspan="10">Cascade Lake<br><br>Cooper Lake<br><br>Skylake</td>
+    <td class="tg-nrix" rowspan="10">CentOS 7.8<br><br>Ubuntu 18.04</td>
+    <td class="tg-nrix" rowspan="10">3.6<br><br>3.7</td>
+    <td class="tg-cly1" rowspan="6">TensorFlow</td>
     <td class="tg-7zrl">2.2.0</td>
   </tr>
   <tr>
@@ -183,14 +151,8 @@ Intel® Low Precision Optimization Tool requires installing the pertinent Intel-
     <td class="tg-7zrl">1.15.2</td>
   </tr>
   <tr>
-    <td class="tg-7zrl" rowspan="3">PyTorch</td>
+    <td class="tg-7zrl">PyTorch</td>
     <td class="tg-7zrl">1.5.0+cpu</td>
-  </tr>
-  <tr>
-    <td class="tg-7zrl">1.6.0+cpu</td>
-  </tr>
-  <tr>
-    <td class="tg-7zrl">IPEX</td>
   </tr>
   <tr>
     <td class="tg-cly1" rowspan="2">MXNet</td>
@@ -206,7 +168,7 @@ Intel® Low Precision Optimization Tool requires installing the pertinent Intel-
 </tbody>
 </table>
 
-# Validated Models
+# Model Zoo
 
 Intel® Low Precision Optimization Tool provides numerous examples to show promising accuracy loss with the best performance gain. Below table lists some key models as showcases. Full quantized model list on various frameworks is available in [Model List](docs/full_model_list.md)
 
@@ -230,123 +192,123 @@ Intel® Low Precision Optimization Tool provides numerous examples to show promi
 <tbody>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>resnet50v1.5</td>
     <td>ImageNet</td>
-    <td>76.70%</td>
+    <td>76.80%</td>
     <td>76.50%</td>
-    <td>0.26%</td>
-    <td>3.23x</td>
+    <td>0.39%</td>
+    <td>3.80x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>Resnet101</td>
     <td>ImageNet</td>
     <td>77.20%</td>
     <td>76.40%</td>
     <td>1.05%</td>
-    <td>2.42x</td>
+    <td>2.72x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>inception_v1</td>
     <td>ImageNet</td>
     <td>70.10%</td>
     <td>69.70%</td>
     <td>0.57%</td>
-    <td>1.88x</td>
+    <td>2.55x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>inception_v2</td>
     <td>ImageNet</td>
-    <td>74.10%</td>
     <td>74.00%</td>
-    <td>0.14%</td>
-    <td>1.96x</td>
+    <td>74.00%</td>
+    <td>0.00%</td>
+    <td>2.56x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>inception_v3</td>
     <td>ImageNet</td>
     <td>77.20%</td>
     <td>76.70%</td>
     <td>0.65%</td>
-    <td>2.36x</td>
+    <td>3.17x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>inception_v4</td>
     <td>ImageNet</td>
     <td>80.00%</td>
     <td>80.30%</td>
     <td>-0.37%</td>
-    <td>2.59x</td>
+    <td>2.57x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>inception_resnet_v2</td>
     <td>ImageNet</td>
-    <td>80.10%</td>
+    <td>80.20%</td>
     <td>80.40%</td>
-    <td>-0.37%</td>
-    <td>1.97x</td>
+    <td>-0.25%</td>
+    <td>2.24x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>Mobilenetv1</td>
     <td>ImageNet</td>
     <td>71.10%</td>
     <td>71.00%</td>
     <td>0.14%</td>
-    <td>2.88x</td>
+    <td>2.93x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>ssd_resnet50_v1</td>
     <td>Coco</td>
-    <td>37.90%</td>
     <td>38.00%</td>
-    <td>-0.26%</td>
-    <td>2.97x</td>
+    <td>38.00%</td>
+    <td>0.00%</td>
+    <td>3.06x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>mask_rcnn_inception_v2</td>
     <td>Coco</td>
     <td>28.90%</td>
     <td>29.10%</td>
     <td>-0.69%</td>
-    <td>2.66x</td>
+    <td>3.93x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>vgg16</td>
     <td>ImageNet</td>
-    <td>72.50%</td>
+    <td>72.10%</td>
     <td>70.90%</td>
-    <td>2.26%</td>
-    <td>3.75x</td>
+    <td>1.69%</td>
+    <td>3.70x</td>
   </tr>
   <tr>
     <td>tensorflow</td>
-    <td>2.4.0</td>
+    <td>2.2.0</td>
     <td>vgg19</td>
     <td>ImageNet</td>
-    <td>72.40%</td>
+    <td>72.30%</td>
     <td>71.00%</td>
-    <td>1.97%</td>
-    <td>3.79x</td>
+    <td>1.83%</td>
+    <td>3.74x</td>
   </tr>
 </tbody>
 </table>
@@ -388,31 +350,31 @@ Intel® Low Precision Optimization Tool provides numerous examples to show promi
     <td>79.12%</td>
     <td>79.31%</td>
     <td>-0.24%</td>
-    <td>2.61x</td>
+    <td>2.57x</td>
   </tr>
   <tr>
     <td>pytorch</td>
-    <td>1.6.0a0+24aac32</td>
+    <td>1.5.0+cpu</td>
     <td>bert_base_mrpc</td>
     <td>MRPC</td>
     <td>88.90%</td>
     <td>88.73%</td>
     <td>0.19%</td>
-    <td>1.98x</td>
+    <td>2.08x</td>
   </tr>
   <tr>
     <td>pytorch</td>
-    <td>1.6.0a0+24aac32</td>
+    <td>1.5.0+cpu</td>
     <td>bert_base_cola</td>
     <td>COLA</td>
     <td>59.06%</td>
     <td>58.84%</td>
     <td>0.37%</td>
-    <td>2.19x</td>
+    <td>2.18x</td>
   </tr>
   <tr>
     <td>pytorch</td>
-    <td>1.6.0a0+24aac32</td>
+    <td>1.5.0+cpu</td>
     <td>bert_base_sts-b</td>
     <td>STS-B</td>
     <td>88.40%</td>
@@ -422,17 +384,17 @@ Intel® Low Precision Optimization Tool provides numerous examples to show promi
   </tr>
   <tr>
     <td>pytorch</td>
-    <td>1.6.0a0+24aac32</td>
+    <td>1.5.0+cpu</td>
     <td>bert_base_sst-2</td>
     <td>SST-2</td>
     <td>91.51%</td>
     <td>91.86%</td>
     <td>-0.37%</td>
-    <td>2.30x</td>
+    <td>2.29x</td>
   </tr>
   <tr>
     <td>pytorch</td>
-    <td>1.6.0a0+24aac32</td>
+    <td>1.5.0+cpu</td>
     <td>bert_base_rte</td>
     <td>RTE</td>
     <td>69.31%</td>
@@ -442,7 +404,7 @@ Intel® Low Precision Optimization Tool provides numerous examples to show promi
   </tr>
   <tr>
     <td>pytorch</td>
-    <td>1.6.0a0+24aac32</td>
+    <td>1.5.0+cpu</td>
     <td>bert_large_mrpc</td>
     <td>MRPC</td>
     <td>87.45%</td>
@@ -452,7 +414,7 @@ Intel® Low Precision Optimization Tool provides numerous examples to show promi
   </tr>
   <tr>
     <td>pytorch</td>
-    <td>1.6.0a0+24aac32</td>
+    <td>1.5.0+cpu</td>
     <td>bert_large_squad</td>
     <td>SQUAD</td>
     <td>92.85%</td>
@@ -462,13 +424,13 @@ Intel® Low Precision Optimization Tool provides numerous examples to show promi
   </tr>
   <tr>
     <td>pytorch</td>
-    <td>1.6.0a0+24aac32</td>
+    <td>1.5.0+cpu</td>
     <td>bert_large_qnli</td>
     <td>QNLI</td>
     <td>91.20%</td>
     <td>91.82%</td>
     <td>-0.68%</td>
-    <td>2.69x</td>
+    <td>2.67x</td>
   </tr>
 </tbody>
 </table>
@@ -515,7 +477,7 @@ View [Legal Information](legal_information.md).
 
 ## Citation
 
-If you use Intel® Low Precision Optimization Tool in your research or you wish to refer to the tuning results published in the [Validated Models](#validated-models), use the following BibTeX entry.
+If you use Intel® Low Precision Optimization Tool in your research or you wish to refer to the tuning results published in the [Model Zoo](#model-zoo), use the following BibTeX entry.
 
 ```
 @misc{Intel® Low Precision Optimization Tool,

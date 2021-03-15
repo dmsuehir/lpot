@@ -41,6 +41,12 @@ from tensorflow.python.tools.optimize_for_inference_lib import optimize_for_infe
 
 tf.compat.v1.disable_eager_execution()
 
+CONTINUOUS_COLUMNS = ["I"+str(i) for i in range(1, 14)]  # 1-13 inclusive
+CATEGORICAL_COLUMNS = ["C"+str(i) for i in range(1, 27)]  # 1-26 inclusive
+LABEL_COLUMN = ["clicked"]
+TRAIN_DATA_COLUMNS = LABEL_COLUMN + CONTINUOUS_COLUMNS + CATEGORICAL_COLUMNS
+FEATURE_COLUMNS = CONTINUOUS_COLUMNS + CATEGORICAL_COLUMNS
+
 def load_graph(model_file):
     """This is a function to load TF graph from pb file
 
@@ -82,6 +88,30 @@ def get_feature_name(compute_accuracy):
         feature_datatypes = [tf.io.FixedLenSequenceFeature([], tf.float32, default_value=0.0, allow_missing=True)]+[tf.io.FixedLenSequenceFeature(
                     [], tf.int64, default_value=0, allow_missing=True)]
     return full_features_names, feature_datatypes
+
+def generate_input_fn(filename, batch_size, num_epochs):
+    def parse_csv(value):
+        tf.compat.v1.logging.info('Parsing {}'.format(filename))
+        cont_defaults = [[0.0] for i in range(1, 14)]
+        cate_defaults = [[" "] for i in range(1, 27)]
+        label_defaults = [[0]]
+        column_headers = TRAIN_DATA_COLUMNS
+        record_defaults = label_defaults + cont_defaults + cate_defaults
+        columns = tf.io.decode_csv(value, record_defaults=record_defaults)
+        all_columns = collections.OrderedDict(zip(column_headers, columns))
+        labels = all_columns.pop(LABEL_COLUMN[0])
+        features = all_columns
+        return features, labels
+
+    # Extract lines from input files using the Dataset API.
+    dataset = tf.data.TextLineDataset(filename)
+    dataset = dataset.shuffle(buffer_size=20000)
+    dataset = dataset.repeat(num_epochs)
+    dataset = dataset.prefetch(batch_size)
+    dataset = dataset.batch(batch_size)
+    dataset = dataset.map(parse_csv, num_parallel_calls=28)
+    dataset = dataset.prefetch(1)
+    return dataset
 
 def input_fn(data_file, num_epochs, shuffle, batch_size, compute_accuracy=True):
     """Generate an input function for the Estimator."""
@@ -183,6 +213,11 @@ class eval_classifier_optimized_graph:
         from lpot import Quantization
         infer_graph = load_graph(self.args.input_graph)
         quantizer = Quantization(self.args.config)
+
+        if "OUTPUT_DIR" in os.environ:
+            # Set the workspace to be in the OUTPUT_DIR, otherwise we get permissions errors when running in k8s
+            quantizer.conf.usr_cfg.tuning.workspace.path = os.path.join(os.getenv("OUTPUT_DIR"), "lpot_workspace")
+
         if self.args.calib_data:
             quantizer.model = infer_graph
             quantizer.calib_dataloader = Dataloader(self.args.calib_data, self.args.batch_size)
@@ -214,11 +249,13 @@ class eval_classifier_optimized_graph:
             infer_config.inter_op_parallelism_threads = self.args.num_inter_threads
         infer_config.use_per_session_threads = 1
 
-        total_test_samples = sum(1 for _ in tf.compat.v1.python_io.tf_record_iterator(self.args.eval_data))
+        total_test_samples = sum(1 for line in open(self.args.eval_data))
+        #total_test_samples = sum(1 for _ in tf.compat.v1.python_io.tf_record_iterator(self.args.eval_data))
         total_batches = math.ceil(float(total_test_samples)/self.args.batch_size)
-        placeholder_list = ['new_numeric_placeholder','new_categorical_placeholder']
+        #placeholder_list = ['new_numeric_placeholder','new_categorical_placeholder']
+        placeholder_list = ["Placeholder_{}".format(x) if x != 0 else "Placeholder" for x in list(range(39))]
         input_tensor = [infer_graph.get_tensor_by_name(name + ":0") for name in placeholder_list]
-        output_name = "import/head/predictions/probabilities"
+        output_name = "head/predictions/probabilities"
         output_tensor = infer_graph.get_tensor_by_name(output_name + ":0" )
         correctly_predicted = 0
         evaluate_duration = 0.0
@@ -226,14 +263,19 @@ class eval_classifier_optimized_graph:
         features_list = []
         data_graph = tf.Graph()
         with data_graph.as_default():
-            res_dataset = input_fn(self.args.eval_data, 1, False, self.args.batch_size)
+            res_dataset = generate_input_fn(self.args.eval_data, self.args.batch_size, 1)
+            #res_dataset = input_fn(self.args.eval_data, 1, False, self.args.batch_size)
             iterator = tf.compat.v1.data.make_one_shot_iterator(res_dataset)
             next_element = iterator.get_next()
+            once = True
             with tf.compat.v1.Session(config=data_config, graph=data_graph) as data_sess:
+                data_sess.run(tf.compat.v1.global_variables_initializer())
                 for i in range(int(total_batches)):
                     batch = data_sess.run(next_element)
-                    features=batch[0:3]
-                    features_list.append(features)
+                    feature_batch = [None] * len(FEATURE_COLUMNS)
+                    for i, c in enumerate(FEATURE_COLUMNS):
+                        feature_batch[i] = batch[0][c]
+                    features_list.append([feature_batch, batch[1]])
 
         if (not self.args.accuracy_only):
             iteration = 0
@@ -247,7 +289,7 @@ class eval_classifier_optimized_graph:
                 i = 0
                 for i in range(int(total_run)):
                     start_time = time.time()
-                    logistic = infer_sess.run(output_tensor, dict(zip(input_tensor, features_list[iteration][0:2])))
+                    logistic = infer_sess.run(output_tensor, dict(zip(input_tensor, features_list[iteration][0][0:38])))
                     time_consume = time.time() - start_time
 
                     if iteration > warm_up_iteration:
@@ -262,12 +304,12 @@ class eval_classifier_optimized_graph:
                 i = 0
                 for i in range(int(total_batches)):
                     start_time = time.time()
-                    logistic = infer_sess.run(output_tensor, dict(zip(input_tensor, features_list[i][0:2])))
+                    logistic = infer_sess.run(output_tensor, dict(zip(input_tensor, features_list[i][0])))
                     time_consume = time.time() - start_time
                     evaluate_duration += time_consume
 
                     predicted_labels = np.argmax(logistic,1)
-                    correctly_predicted=correctly_predicted+np.sum(features_list[i][2] == predicted_labels)
+                    correctly_predicted=correctly_predicted+np.sum(features_list[i][1] == predicted_labels)
 
                     i=i+1
 
@@ -312,21 +354,26 @@ class Dataloader(object):
         """
         self.batch_size = batch_size
         self.data_file = data_location
-        self.total_samples = sum(1 for _ in tf.compat.v1.python_io.tf_record_iterator(data_location))
+        #self.total_samples = sum(1 for _ in tf.compat.v1.python_io.tf_record_iterator(data_location))
+        self.total_samples = sum(1 for line in open(data_location))
         self.n = math.ceil(float(self.total_samples) / batch_size)
         print("batch size is " + str(self.batch_size) + "," + str(self.n) + " iteration")
 
     def __iter__(self):
         data_graph = tf.Graph()
         with data_graph.as_default():
-            self.dataset = input_fn(self.data_file, 1, False, self.batch_size)
+            #self.dataset = input_fn(self.data_file, 1, False, self.batch_size)
+            self.dataset = generate_input_fn(self.data_file, self.batch_size, 1)
             self.dataset_iterator = tf.compat.v1.data.make_one_shot_iterator(self.dataset)
             next_element = self.dataset_iterator.get_next()
 
         with tf.compat.v1.Session(graph=data_graph) as sess:
             for i in range(self.n):
                 batch = sess.run(next_element)
-                yield (batch[0:2], batch[2])
+                input_data = [None] * len(FEATURE_COLUMNS)
+                for i, c in enumerate(FEATURE_COLUMNS):
+                    input_data[i] = batch[0][c]
+                yield (input_data, batch[1])
 
 
 if __name__ == "__main__":
