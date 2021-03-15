@@ -56,6 +56,10 @@ def load_graph(model_file):
     Returns:
         graph: TF graph object
   """
+
+    if os.path.isdir(model_file):
+        return model_file
+
     graph = tf.Graph()
     #graph_def = tf.compat.v1.GraphDef()
     graph_def = graph_pb2.GraphDef()
@@ -234,6 +238,10 @@ class eval_classifier_optimized_graph:
             with graph.as_default():
                 tf.import_graph_def(infer_graph, name='') 
             infer_graph = graph
+        elif isinstance(infer_graph, str) and os.path.isdir(infer_graph):
+            # saved model
+            loaded = tf.saved_model.load(infer_graph)
+            infer_graph = loaded.graph
 
         data_config = tf.compat.v1.ConfigProto()
         data_config.intra_op_parallelism_threads = self.args.num_intra_threads

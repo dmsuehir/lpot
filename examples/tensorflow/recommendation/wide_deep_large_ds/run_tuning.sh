@@ -70,9 +70,6 @@ function run_tuning {
     # check for the output graph file
     if [[ -f "${output_model}" ]]; then
         echo "Found output graph at: ${output_model}"
-    else
-        echo "The output graph (${output_model}) does not exist."
-        exit 1
     fi
 }
 
